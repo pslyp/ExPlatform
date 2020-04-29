@@ -1,5 +1,6 @@
 package com.training.platform.controllers.admin;
 
+import com.training.platform.entities.Pager;
 import com.training.platform.entities.User;
 import com.training.platform.services.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.jws.WebParam;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,14 +34,26 @@ public class UserController {
                         @RequestParam("pageSize") Optional<Integer> pageSize,
                         @RequestParam("page") Optional<Integer> page) throws Exception {
 
-//        Page<User> users = userService.findAll(PageRequest.of(evalPage, evalPageSize, Sort.by(Sort.Direction.DESC, "id")));
-
+        int evalPageSize = pageSize.orElse(INITIAL_PAGE_SIZE);
         int evalPage = (page.orElse(0) < 1) ? INITIAL_PAGE : page.get() - 1;
 
-        List<User> users = userService.findAll();
+        Page<User> users = userService.findAll(PageRequest.of(evalPage, evalPageSize, Sort.by(Sort.Direction.DESC, "id")));
+
+        Pager pager = new Pager(users.getTotalPages(), users.getNumber(), BUTTONS_TO_SHOW);
+
         model.addAttribute("items", users);
+        model.addAttribute("selectedPageSize", evalPageSize);
+        model.addAttribute("pager", pager);
 
         return "admin/user/lists";
+    }
+
+    @GetMapping(value = "/create")
+    public String create(Model model) {
+        model.addAttribute("cities", userService.getCities());
+
+
+        return "admin/user/create";
     }
 
     @GetMapping("/demo")

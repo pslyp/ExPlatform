@@ -8,7 +8,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -31,6 +33,15 @@ public class UserServiceImpl implements UserService {
     public Page<User> findAllByLimit(Integer start, Integer limit, String field) {
         PageRequest page = PageRequest.of(start, limit, Sort.by(Sort.Direction.ASC, field));
         return userRepository.findAll(page);
+    }
+
+    @Override
+    public Map<String, String> getCities() {
+        Map<String, String> cities = new HashMap<>();
+        cities.put("bangkok", "bangkok");
+        cities.put("nakornpathom", "nakornpathom");
+
+        return cities;
     }
 
 }

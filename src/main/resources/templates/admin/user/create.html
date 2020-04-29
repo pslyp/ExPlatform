@@ -19,12 +19,12 @@
       <div class="card mb-3">
         <div class="card-header">Create User</div>
         <div class="card-body">
-          <form method="POST">
+          <form method="POST" th:action="@{/admin/user}" th:object="${user}">
             <!----- Show Errors Block ------>
-            <!--<div class="alert alert-danger alert-block">
-      <button type="button" class="close" data-dismiss="alert">×</button>
-      <strong>Error</strong>
-    </div>-->
+            <div class="alert alert-danger alert-block">
+              <button type="button" class="close" data-dismiss="alert">×</button>
+              <strong>Error</strong>
+            </div>
 
             <div class="card border-dark">
               <div class="card-header">
@@ -33,14 +33,8 @@
               <div class="card-body text-dark">
                 <div class="form-group">
                   <label for="email">Email address</label>
-                  <input
-                    class="form-control"
-                    id="email"
-                    type="email"
-                    aria-describedby="emailHelp"
-                    placeholder="Enter email"
-                  />
-                  <!--<span class="text-danger">errors</span>-->
+                  <input class="form-control" id="email" th:field="*{email}" type="email" aria-describedby="emailHelp" placeholder="Enter email"/>
+                  <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-danger">errors</span>
                 </div>
 
                 <div class="form-group">
@@ -140,6 +134,10 @@
                   <label>City</label>
                   <select class="form-control">
                     <option value=""> --- Select City ---- </option>
+                    <option th:each="city : ${cities}"
+                            th:value="${city.key}"
+                            th:text="${city.value}"
+                            th:selected="${city == city.key}">
                   </select>
                   <!--<span class="text-danger">errors</span>-->
                 </div>

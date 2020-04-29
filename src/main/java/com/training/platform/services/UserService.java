@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
+import java.util.Map;
 
 public interface UserService {
 
@@ -14,5 +15,6 @@ public interface UserService {
 
     Page<User> findAllByLimit(Integer start, Integer limit, String field);
 
+    Map<String, String> getCities();
 
 }
