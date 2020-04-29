@@ -8,9 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -42,6 +40,28 @@ public class UserServiceImpl implements UserService {
         cities.put("nakornpathom", "nakornpathom");
 
         return cities;
+    }
+
+    @Override
+    public User save(Map<String, String> inputs) throws Exception {
+        try {
+            User user = new User();
+
+            user.setName(inputs.get("name"));
+            user.setSurname(inputs.get("surname"));
+            user.setEmail(inputs.get("email"));
+            user.setPassword(inputs.get("password"));
+            user.setAge(Integer.parseInt(inputs.get("age")));
+            user.setAddress(inputs.get("address"));
+            user.setCity(inputs.get("city"));
+            user.setMobile(inputs.get("mobile"));
+            user.setActive(1);
+            user.setCreateedAt((java.sql.Date) new Date());
+
+            return userRepository.save(user);
+        } catch (Exception e) {
+            throw e;
+        }
     }
 
 }

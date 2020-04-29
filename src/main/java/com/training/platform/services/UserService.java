@@ -17,4 +17,6 @@ public interface UserService {
 
     Map<String, String> getCities();
 
+    User save(Map<String,String> inputs) throws Exception;
+
 }
